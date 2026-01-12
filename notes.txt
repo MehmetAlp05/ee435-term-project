@@ -1,0 +1,19 @@
+example project
+https://github.com/fromconcepttocircuit/ADALM-Pluto-Spectrum-Analyzer
+
+ANIL
+wants to add CFAR 
+
+2.0GHz to 2.1 GHz
+which is 100MHz
+
+
+• AM-DSB-SC (Amplitude Modulation Double Sideband Suppressed Carrier)
+• AM-SSB (Amplitude Modulation Single Sideband)
+• FM (Frequency Modulation)
+• LFM (Linear Frequency Modulation – Chirp Signal) [Optional]
+
+
+burst
+
+the broadcast of a relatively high-bandwidth transmission over a short period
