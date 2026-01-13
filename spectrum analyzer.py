@@ -1,3 +1,4 @@
+#####RANDOM BULLSHIT GO from gumini######
 import sys
 import numpy as np
 import adi
@@ -15,6 +16,7 @@ from PyQt6.QtGui import QCursor
 ##############################################################################
 # FIR filter design function
 ##############################################################################
+#why do we need filter no idea
 def design_filter(sample_rate, cutoff_hz=400e3):
     """
     Designs a low-pass FIR filter using a Kaiser window.
@@ -28,6 +30,8 @@ def design_filter(sample_rate, cutoff_hz=400e3):
     N_filt, beta_filt = kaiserord(ripple_db, width)
     b_filt = firwin(N_filt, cutoff_hz / nyq_rate, window=('kaiser', beta_filt))
     return b_filt
+
+###Pluto setup and data acquisition###############################
 # Connect to the Pluto SDR
 sdr = adi.Pluto('ip:192.168.2.1') # Default IP
 
@@ -53,7 +57,9 @@ while time.time() < end_time:
         
         # PROCESSING: Insert your detection logic here (Energy Detection, FFT, etc.)
         # spectrum = np.abs(np.fft.fftshift(np.fft.fft(samples)))
+##wtf is this
 
+#### burst what is this even mean######
 def detect_bursts(samples, fs, threshold_db=-40):
     # Compute the FFT and convert to dB
     fft_data = np.fft.fftshift(np.fft.fft(samples))
@@ -69,14 +75,14 @@ def detect_bursts(samples, fs, threshold_db=-40):
         fc_offset = (indices.mean() - len(samples)/2) * (fs / len(samples))
         return True, fc_offset, bw_hz
     return False, 0, 0
-
+####anotuher acquiring code######
 import time
 
-# Data structure to hold detected signals [cite: 36]
+# Data structure to hold detected signals 
 detected_signals = [] 
 start_monitoring = time.time()
 
-while (time.time() - start_monitoring) < 10:  # 10s window [cite: 61]
+while (time.time() - start_monitoring) < 10:  # 10s window 
     for center_f in subbands:
         sdr.rx_lo = int(center_f)
         samples = sdr.rx()
@@ -85,7 +91,7 @@ while (time.time() - start_monitoring) < 10:  # 10s window [cite: 61]
         is_active, offset, bw = detect_bursts(samples, sdr.sample_rate)
         
         if is_active:
-            # Record initial detection [cite: 26, 28, 29]
+            # Record initial detection 
             signal_entry = {
                 't_start_s': timestamp,
                 'fc_hz': center_f + offset,
@@ -93,18 +99,21 @@ while (time.time() - start_monitoring) < 10:  # 10s window [cite: 61]
                 'subband_start_hz': center_f - (sdr.sample_rate / 2)
             }
             detected_signals.append(signal_entry)
-            # Logic for modulation classification would follow here [cite: 31]
+            # Logic for modulation classification would follow here
+
+
+###########################
 import pandas as pd
 from datetime import datetime
 
-# Generate filename: EE435_TeamXX_YYYY-MM-DDThh-mm-ssZ.csv [cite: 37]
+# Generate filename: EE435_TeamXX_YYYY-MM-DDThh-mm-ssZ.csv 
 timestamp_str = datetime.utcnow().strftime('%Y-%m-%dT%H-%M-%SZ')
 filename = f"EE435_Team01_{timestamp_str}.csv"
 
 df = pd.DataFrame(detected_signals)
-# Ensure all required columns are present [cite: 36]
+# Ensure all required columns are present 
 df.to_csv(filename, index=False, encoding='utf-8')
-
+##########################
 import numpy as np
 
 def extract_features(samples):
@@ -143,28 +152,28 @@ def classify_modulation(samples, fs):
     usb_power = np.sum(np.abs(fft_data[halfway:])**2)
     
     # 3. Decision Logic
-    # Thresholds may need tuning based on your SNR [cite: 32, 42]
+    # Thresholds may need tuning based on your SNR 
     if env_var < 0.1:
         # Check for LFM (Chirp) by looking for linear frequency change
         phase = np.unwrap(np.angle(samples))
         inst_freq = np.diff(phase)
         # If the frequency plot is a straight line, it's LFM 
-        # Otherwise, classify as FM [cite: 13]
+        # Otherwise, classify as FM 
         return "FM" 
         
     else:
-        # It is an AM variant [cite: 11, 12]
+        # It is an AM variant 
         # Calculate ratio between sidebands
         sideband_ratio = max(lsb_power, usb_power) / (min(lsb_power, usb_power) + 1e-9)
         
         if sideband_ratio > 10: # If one side is >10x stronger than the other
-            return "SSB" #[cite: 12]
+            return "SSB" 
         else:
-            return "DSB-SC" #[cite: 11]
+            return "DSB-SC" 
 
 
 
-
+######GERNERTAE REPORT######
 import pandas as pd
 from datetime import datetime
 import os
@@ -183,6 +192,6 @@ def generate_report(detected_signals, team_id="XX"):
     timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H-%M-%SZ')
     filename = f"EE435_Team{team_id}_{timestamp}.csv"
     
-    # Save as UTF-8 [cite: 35]
+    # Save as UTF-8 
     df.to_csv(filename, index=False, encoding='utf-8')
     return filename

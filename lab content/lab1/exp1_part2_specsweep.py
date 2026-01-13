@@ -88,7 +88,7 @@ for ntune in range(nretunes):
         sdr_data = sdr_Rx.rx() / (2**11)
     
     # display current centre frequency
-    print(f"            fc = {sdr_tunerfreq[ntune] / 1e6} MHz")
+    print(f"fc = {sdr_tunerfreq[ntune] / 1e6} MHz")
     
     # Loop for nfrmhold frames
     for frm in range(nfrmhold):
