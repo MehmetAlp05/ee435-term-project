@@ -23,7 +23,8 @@ while time.time() - start_time < 3:
     captured_data.append((samples, ts))
 
 print(f"Captured {len(captured_data)} buffers. Processing...")
-
+np.savez("pluto_capture.npz", samples=raw_samples, times=timestamps)
+print(f"Saved {len(raw_samples)} blocks to pluto_capture.npz")
 # --- 2. PROCESSING ---
 results = []
 for i, (samples, ts) in enumerate(captured_data):
@@ -68,6 +69,6 @@ for i, (samples, ts) in enumerate(captured_data):
             'f_shift': f_shift,
             'mod': mod_type
         })
-print(results)
+#print(results)
 # --- 4. CONSOLIDATION (Merge consecutive hits into one burst) ---
 # Logic: If hits are within 100ms and have same freq, they are one burst.
