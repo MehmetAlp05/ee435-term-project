@@ -22,7 +22,7 @@ def update_plot(idx):
     psd = 10 * np.log10(np.abs(np.fft.fftshift(np.fft.fft(samples)))**2 / N)
     
     ax.plot(freqs / 1e3, psd) # Plot in kHz for better readability
-    ax.set_ylim([-80, 0])      # Adjust based on your signal strength
+    ax.set_ylim([20, 100])      # Adjust based on your signal strength
     ax.set_title(f"Buffer {idx} | Time: {times_list[idx]:.3f}s")
     ax.set_xlabel("Frequency Offset (kHz)")
     ax.set_ylabel("Power (dB)")

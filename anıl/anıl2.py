@@ -52,7 +52,7 @@ def classify_modulation(iq, fs):
     bw_est = bw[-1] - bw[0] if len(bw) > 0 else 0
 
     # FM / LFM (constant envelope)
-    if env_var < 1e-3:
+    if env_var < 1:
         phase = np.unwrap(np.angle(iq))
         inst_freq = np.diff(phase)
         slope = np.polyfit(np.arange(len(inst_freq)), inst_freq, 1)[0]
@@ -60,7 +60,7 @@ def classify_modulation(iq, fs):
 
     # AM family
     spectrum = np.abs(np.fft.fftshift(np.fft.fft(iq)))
-    if np.max(spectrum) / np.mean(spectrum) > 10:
+    if np.max(spectrum) / np.mean(spectrum) > 30:
         return "AM", bw_est
 
     # SSB vs DSB-SC
@@ -81,16 +81,26 @@ sdr.rx_lo = int(fc)
 sdr.rx_hardwaregain_chan0 = rx_gain
 sdr.rx_buffer_size = 262144
 
+
 # ============================================================
 # ACQUIRE IQ
 # ============================================================
 print("[RX] Capturing samples...")
-iq = []
-start = time.time()
-while time.time() - start < run_time_s:
-    iq.append(sdr.rx())
-iq = np.concatenate(iq)
+try:
+    # RX processing here
+    iq = []
+    start = time.time()
+    while time.time() - start < run_time_s:
+        iq.append(sdr.rx())
+    iq = np.concatenate(iq)
 
+finally:
+    # CLEAN EXIT (prevents crash)
+    try:
+        sdr.rx_destroy_buffer()
+    except:
+        pass
+    del sdr
 # ============================================================
 # DECIMATE FOR DETECTION (HUGE SPEED WIN)
 # ============================================================

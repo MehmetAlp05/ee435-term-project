@@ -94,6 +94,7 @@ iq = []
 start = time.time()
 while time.time() - start < duration_s:
     iq.append(sdr.rx())
+    print(time.time())
 iq = np.concatenate(iq)
 
 ############################################
