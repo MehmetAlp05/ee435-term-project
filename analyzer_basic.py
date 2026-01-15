@@ -9,6 +9,7 @@ fc = 2e9          # Fixed center frequency
 sdr = adi.Pluto("ip:192.168.2.1")
 sdr.sample_rate = int(fs)
 sdr.rx_lo = int(fc)
+time.sleep(0.1)  # Allow settings to take effect
 sdr.rx_buffer_size = 2**14 # ~6.5ms buffers for 40ms bursts
 
 captured_data = []
@@ -16,7 +17,7 @@ threshold = -45 # Adjust based on your lab's noise floor (dB)
 
 print("Capturing 10 seconds of data...")
 start_time = time.time()
-while time.time() - start_time < 10:
+while time.time() - start_time < 3:
     samples = sdr.rx()
     ts = time.time() - start_time
     captured_data.append((samples, ts))
@@ -67,6 +68,6 @@ for i, (samples, ts) in enumerate(captured_data):
             'f_shift': f_shift,
             'mod': mod_type
         })
-
+print(results)
 # --- 4. CONSOLIDATION (Merge consecutive hits into one burst) ---
 # Logic: If hits are within 100ms and have same freq, they are one burst.

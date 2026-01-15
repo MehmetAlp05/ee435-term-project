@@ -9,8 +9,8 @@ import threading
 # Simulation time in seconds
 sdr_Rx = exp1_part1a_spectrumAnalyzer.Receiver()
 
-sdr_Rx.tunerfreq = 105e6         # Pluto SDR center frequency in Hz
-sdr_Rx.sample_rate = 3e6         # Pluto SDR sampling rate in Hz
+sdr_Rx.tunerfreq = 2e9         # Pluto SDR center frequency in Hz
+sdr_Rx.sample_rate = 2.5e6         # Pluto SDR sampling rate in Hz
 sdr_Rx.gain = 60                 # Pluto SDR tuner gain in dB
 sdr_Rx.frmlen = 4096             # Number of samples per frame
 
