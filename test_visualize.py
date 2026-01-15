@@ -19,7 +19,8 @@ def update_plot(idx):
     # Calculate PSD
     N = len(samples)
     freqs = np.fft.fftshift(np.fft.fftfreq(N, 1/fs))
-    psd = 10 * np.log10(np.abs(np.fft.fftshift(np.fft.fft(samples)))**2 / N)
+    psd_linear = np.abs(np.fft.fftshift(np.fft.fft(samples)))**2 / N
+    psd = 10 * np.log10(psd_linear + 1e-12)  # added epsilon to avoid log(0)
     
     ax.plot(freqs / 1e3, psd) # Plot in kHz for better readability
     ax.set_ylim([20, 100])      # Adjust based on your signal strength
