@@ -1,6 +1,4 @@
-# EE 435 Term Project Phase 2 Report
-
-#### Lab 1J – Mehmet Alp Demircioğlu, 2575082, Anıl Budak, 25 74812
+# EE 435 Term Project
 
 ## 1. Introduction
 
@@ -38,18 +36,6 @@ The total recording spans approximately 10 seconds, during which the frequency b
 is repeatedly observed. Time stamps associated with each buffer are used later to estimate burst
 durations and track signal activity over time. Table 1 summarizes the main data acquisition
 parameters.
-
-```
-Table 1 : Parameters and values used in Data Acquisition
-```
-```
-Parameter Value Description
-Sampling frequency (fs) 2.5 MHz SDR sampling rate
-Data format Complex baseband (I/Q) Amplitude and phase preserved
-Buffer duration N / fs Fixed per buffer
-Total capture time ≈ 10 s Full observation window
-Storage format .npz file Offline processing
-```
 
 ## 3. Data Analysis
 
@@ -146,16 +132,7 @@ following steps:
 3. Sliding Metric Calculation: The window slides across the buffer with a 75% overlap. For
     each position, the Normalized Envelope Variance (σ#$%&! ) is calculated as:
 
-```
-σ#$%&! =
-```
-```
-E[(A−μ')!]
-μ'!
-```
-```
-where A refers to signal envelope amplitude and 𝜇( is the mean amplitude A.
-```
+
 4. Minimum Selection: The algorithm selects the specific 5 ms window with the minimum
     variance.
 
@@ -179,13 +156,6 @@ For signals identified as having varying envelopes, we perform a Spectral Correl
 - Correlation Coefficient: We calculate the Pearson correlation coefficient (ρ) between S*
     and S+,%-.:
 
-```
-ρ=
-```
-```
-cov=S*,S/,%-.?
-σ/!σ/",$%&
-```
 A high correlation score (typically) indicates that the power spectral density is mirrored around
 the center, which is the defining characteristic of DSB-SC (Type 2). A low correlation score
 indicates power is concentrated on only one side, identifying the signal as SSB (Type 3).
@@ -208,7 +178,7 @@ The final phase of the system is responsible for aggregating the features extrac
 buffers into a single, cohesive decision for each detected signal and exporting these results into the
 required format.
 
-### 4.1 Majority-Vo t i n g C o n s e n s u s M e c h a n i s m
+### 4.1 Majority-Voting Consensus Mechanism
 
 Because signals are captured in real-time and processed in discrete 20,000-sample buffers, a single
 long-duration transmission can span multiple buffers. Environmental noise, momentary fading, or
@@ -253,13 +223,7 @@ samples processed.
 The f"4560 represents the signal's center frequency relative to the DC component of the baseband.
 This is calculated as the midpoint of the detected bandwidth:
 
-```
-f"4560=
-```
-```
-f 4 −f 3
-2
-```
+
 where f 4 and f 3 are the highest and lowest frequencies where the power exceeds the noise floor by
 9dB.
 
